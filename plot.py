@@ -1,6 +1,7 @@
 import numpy as np
-def get(name,outdir='../output/'):
-    out = np.load(outdir+name+'.npy')
+def get(name,outdir=):
+    theoutdir = '../output/'+outdir
+    out = np.load(theoutdir+name+'.npy')
     return out
 
 import matplotlib.pyplot as plt
@@ -10,38 +11,38 @@ rc('text', usetex=True)
 pltdir = '../plots/'
 
 bins=np.arange(0,2,0.1)
-plt.hist(get('rpt','../outputdr01/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.1$')
-plt.hist(get('rpt','../outputdr02/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.2$')
-plt.hist(get('rpt','../outputdr03/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.3$')
+plt.hist(get('rpt','outputdr01/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.1$')
+plt.hist(get('rpt','outputdr02/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.2$')
+plt.hist(get('rpt','outputdr03/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.3$')
 plt.xlabel(r'$R_{p_T}$')
 plt.legend(frameon=False)
 plt.savefig(pltdir+'rpt.png')
 plt.close()
 
-plt.hist(get('jvf','../outputdr01/'),alpha=0.5,label=r'$\Delta R=0.1$')
-plt.hist(get('jvf','../outputdr02/'),alpha=0.5,label=r'$\Delta R=0.2$')
-plt.hist(get('jvf','../outputdr03/'),alpha=0.5,label=r'$\Delta R=0.3$')
+plt.hist(get('jvf','outputdr01/'),alpha=0.5,label=r'$\Delta R=0.1$')
+plt.hist(get('jvf','outputdr02/'),alpha=0.5,label=r'$\Delta R=0.2$')
+plt.hist(get('jvf','outputdr03/'),alpha=0.5,label=r'$\Delta R=0.3$')
 plt.xlabel('JVF')
 plt.legend(frameon=False)
 plt.savefig(pltdir+'jvf.png')
 plt.close()
 
-plt.hist(get('corrjvf','../outputdr01/'),alpha=0.5,label=r'$\Delta R=0.1$')
-plt.hist(get('corrjvf','../outputdr02/'),alpha=0.5,label=r'$\Delta R=0.2$')
-plt.hist(get('corrjvf','../outputdr03/'),alpha=0.5,label=r'$\Delta R=0.3$')
+plt.hist(get('corrjvf','outputdr01/'),alpha=0.5,label=r'$\Delta R=0.1$')
+plt.hist(get('corrjvf','outputdr02/'),alpha=0.5,label=r'$\Delta R=0.2$')
+plt.hist(get('corrjvf','outputdr03/'),alpha=0.5,label=r'$\Delta R=0.3$')
 plt.xlabel('corrJVF')
 plt.legend(frameon=False)
 plt.savefig(pltdir+'corrjvf.png')
 plt.close()
 
-cpt = get('clpt','../outputdr03/')
+cpt = get('clpt','outputdr03/')
 plt.hist(cpt[cpt<10],alpha=0.5)
 plt.xlabel(r'cluster $p_T$')
 plt.savefig(pltdir+'clpt.png')
 plt.close()
 
-jvf = get('jvf','../outputdr02/')
-jvfcorr = get('corrjvf','../outputdr02/')
+jvf = get('jvf','outputdr02/')
+jvfcorr = get('corrjvf','outputdr02/')
 jvflowpt = np.select([cpt<1],[jvf])
 jvflowpt = jvflowpt[jvflowpt>0]
 jvfhipt = np.select([cpt>1],[jvf])
