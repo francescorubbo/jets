@@ -1,5 +1,5 @@
 import numpy as np
-def get(name,outdir=):
+def get(name,outdir=''):
     theoutdir = '../output/'+outdir
     out = np.load(theoutdir+name+'.npy')
     return out
@@ -9,6 +9,80 @@ from matplotlib import rc
 rc('text', usetex=True)
 
 pltdir = '../plots/'
+
+bins=np.arange(0,2,0.1)
+plt.hist(get('rpt','pu0/'),bins=bins,alpha=0.5,label=r'$<\mu>=1$',normed=True)
+plt.hist(get('rpt','pu40/'),bins=bins,alpha=0.5,label=r'$<\mu>=40$',normed=True)
+plt.xlabel(r'$R_{p_T}$')
+plt.legend(frameon=False)
+plt.savefig(pltdir+'rpt.png')
+plt.close()
+
+plt.hist(get('jvf','pu0/'),alpha=0.5,label=r'$<\mu>=1$',normed=True)
+plt.hist(get('jvf','pu40/'),alpha=0.5,label=r'$<\mu>=40$',normed=True)
+plt.xlabel('JVF')
+plt.legend(frameon=False)
+plt.savefig(pltdir+'jvf.png')
+plt.close()
+
+plt.hist(get('corrjvf','pu0/'),alpha=0.5,label=r'$<\mu>=1$',normed=True)
+plt.hist(get('corrjvf','pu40/'),alpha=0.5,label=r'$<\mu>=40$',normed=True)
+plt.xlabel('corrJVF')
+plt.legend(frameon=False)
+plt.savefig(pltdir+'corrjvf.png')
+plt.close()
+
+plt.hist(get('clclam','pu0/'),alpha=0.5,label=r'$<\mu>=1$',normed=True)
+plt.hist(get('clclam','pu40/'),alpha=0.5,label=r'$<\mu>=40$',normed=True)
+plt.xlabel(r'$\lambda_{center}$')
+plt.legend(frameon=False)
+plt.savefig(pltdir+'clclam.png')
+plt.close()
+
+bins=np.arange(0,1,0.1)
+plt.hist(get('clfem','pu0/'),alpha=0.5,label=r'$<\mu>=1$',normed=True,bins=bins)
+plt.hist(get('clfem','pu40/'),alpha=0.5,label=r'$<\mu>=40$',normed=True,bins=bins)
+plt.xlabel(r'$f_{EM}$')
+plt.legend(frameon=False)
+plt.savefig(pltdir+'clfem.png')
+plt.close()
+
+xarr = get('clpt','pu0/')
+yarr = get('clfem','pu0/')
+xx = []
+yy = []
+for x,y in zip(xarr,yarr):
+    if x<0 or x>3: continue
+    if y<0.3 or y>0.8: continue
+    xx.append(x)
+    yy.append(y)
+
+plt.hexbin(xx,yy,
+           cmap=plt.cm.YlOrRd)
+plt.xlabel(r'cluster $p_T$ [GeV]')
+plt.ylabel(r'$f_{EM}$')
+plt.savefig(pltdir+'femvsclpt_pu0.png')
+plt.close()
+
+xarr = get('clpt','pu40/')
+yarr = get('clfem','pu40/')
+xx = []
+yy = []
+for x,y in zip(xarr,yarr):
+    if x<0 or x>3: continue
+    if y<0.3 or y>0.8: continue
+    xx.append(x)
+    yy.append(y)
+
+plt.hexbin(xx,yy,
+           cmap=plt.cm.YlOrRd)
+plt.xlabel(r'cluster $p_T$ [GeV]')
+plt.ylabel(r'$f_{EM}$')
+plt.savefig(pltdir+'femvsclpt_pu40.png')
+plt.close()
+
+import sys
+sys.exit()
 
 bins=np.arange(0,2,0.1)
 plt.hist(get('rpt','outputdr01/'),bins=bins,alpha=0.5,label=r'$\Delta R=0.1$')

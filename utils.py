@@ -1,10 +1,10 @@
 from sklearn.neighbors import NearestNeighbors
 neigh = NearestNeighbors()
-from numpy import vectorize
+from numpy import select
 
 def getassoctrks(tracks,clusters):
     neigh.fit(tracks)
-    assoctrks = neigh.radius_neighbors(clusters, 0.1, return_distance=False)
+    assoctrks = neigh.radius_neighbors(clusters, 0.2, return_distance=False)
     return assoctrks
 
 def computeJVF(assoctrks,trkpt,trkispv):
@@ -24,3 +24,6 @@ def computeJVFcorr(assoctrks,trkpt,trkispv,k):
 def computeRpt(assoctrks,trkpt,trkispv,clpt):
     ptpv = (trkpt*trkispv)[assoctrks].sum()
     return ptpv/clpt
+
+#def weighttrkpt(trkpt,trketa,trkphi,ceta,cphi):
+    
