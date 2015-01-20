@@ -1,9 +1,9 @@
 import ROOT as r
 from sys import stdout
-#filename = '../data/PythiaNoPU_dR01.root'
-#filename = '../data/PythiaPU40_dR03.root'
-filename = '../data/PythiaPU80_dR01.root'
-suffix = '_mu80_dr01'
+#filename = '../data/PythiaPU40_dR01_atCalo_noAreaCorr.root'
+#suffix = '_mu40_dr01_atcalo_noareacorr_pt2030'
+filename = '../data/PythiaNoPU_dR01_atCalo_noAreaCorr.root'
+suffix = '_mu1_dr01_atcalo_noareacorr_pt2030'
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -46,8 +46,8 @@ for jentry in xrange(nentries):
         tjpts = []
         jncls = []
         for jpt,tjpt,jncl in zip(getattr(tree,'j%dpt'%ijet),getattr(tree,'tj%dpt'%ijet),getattr(tree,'j%dncl'%ijet)):
-            if jpt<20: continue
-            if jpt>30: continue
+            if tjpt<20: continue
+            if tjpt>30: continue
             jpts.append(jpt)
             tjpts.append(tjpt)
             jncls.append(jncl)

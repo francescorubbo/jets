@@ -1,7 +1,8 @@
 import ROOT as r
-pu='PU80'
-reco = True
-filename = '../data/Pythia'+pu+'_dR03_10evts.root'
+pu='NoPU'
+reco = False
+#filename = '../data/Pythia'+pu+'_dR01.root'
+filename = '../data/defaultcoord/Pythia'+pu+'_dR01_10evts.root'
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -12,6 +13,8 @@ jeteta = [x for x in tree.truejeteta]
 jetphi = [x for x in tree.truejetphi]
 jetpt = [x for x in tree.truejetpt]
 area = [3.14*0.4*0.4]*len(jetpt)
+
+print jetpt
 
 if reco:
     jeteta = [x for x in tree.j5eta]
@@ -26,7 +29,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
 pltdir = '../plots/'
-if reco: pltdir+='reco5_'
+pltdir+='dr01'
 
 from plotutils import circles
 jets = circles(jeteta,jetphi,area,c=jetpt,alpha=0.5)

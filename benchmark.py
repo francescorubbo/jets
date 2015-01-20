@@ -12,7 +12,7 @@ pltdir = '../plots/'
 
 pusamples = ['mu1','mu40','mu80']
 pos = [1,40,80]
-dr = '_dr03'
+dr = '_dr01_atcalo_noareacorr_pt2030'
 
 def plotmean(var='',color='b'):
     data = [get(var,'_'+mu+dr) for mu in pusamples]
@@ -28,7 +28,7 @@ j2res = plotmean('j2res','r')
 j3res = plotmean('j3res','c')
 j4res = plotmean('j4res','m')
 j5res = plotmean('j5res','y')
-plt.ylim([-30,0])
+#plt.ylim([-30,0])
 plt.xlabel(r'$\mu$')
 plt.ylabel(r'$<p_T^{reco}-p_T^{true}>$ [GeV]')
 plt.legend([j0res,j1res,j2res,j3res,j4res,j5res],
@@ -51,7 +51,7 @@ j2res = plotstd('j2res','r')
 j3res = plotstd('j3res','c')
 j4res = plotstd('j4res','m')
 j5res = plotstd('j5res','y')
-plt.ylim([0,30])
+#plt.ylim([0,30])
 plt.xlabel(r'$\mu$')
 plt.ylabel(r'$\sigma(p_T^{reco}-p_T^{true})$ [GeV]')
 plt.legend([j0res,j1res,j2res,j3res,j4res,j5res],
