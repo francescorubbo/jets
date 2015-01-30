@@ -1,52 +1,12 @@
-import ROOT as r
-from sys import stdout
-filename = '../data/PythJXmc12aJETMETshort.root'
+keys = ['jnoarea0','jnoarea5','j0','j5']
+labels = ['inclusive','cluster $JVF>0.5$','area correction','cluster $JVF>0.5$ + area correction']
 
-ff = r.TFile(filename)
-tree = ff.Get('tree0/tree')
-nentries = tree.GetEntries()
-
-nreco = {'j0':0,'j5':0}
-ntrue = 0
-nrecotrue = {'j0':0,'j5':0}
-nrecofalse = {'j0':0,'j5':0}
-nentries = tree.GetEntries()
-for jentry in xrange(nentries):
-    tree.GetEntry(jentry)
-
-    if not jentry%1000:
-        stdout.write('\r%d'%jentry)
-        stdout.flush()
-
-    for jeta,jpt,tjpt in zip(tree.j0eta,tree.j0pt,tree.tj0pt):
-        if jeta>2.5: continue
-        if jpt<20: continue
-        if jpt>30: continue
-
-        nreco['j0'] += 1
-        if tjpt>0.:
-            nrecotrue['j0'] += 1
-        if tjpt<0.:
-            nrecofalse['j0'] += 1
-
-    for jeta,jpt,tjpt in zip(tree.j5eta,tree.j5pt,tree.tj5pt):
-        if jeta>2.5: continue
-        if jpt<20: continue
-        if jpt>30: continue
-
-        nreco['j5'] += 1
-        if tjpt>20. and tjpt<30:
-            nrecotrue['j5'] += 1
-        elif tjpt<0.:
-            nrecofalse['j5'] += 1
- 
-    for tpt in tree.truejetpt:
-        if tpt<20: continue
-        if tpt>30: continue
-        ntrue += 1
-print
-
-print nreco, nrecotrue, nrecofalse
+import json
+from numpy import array,vectorize
+ntrue = array(json.load(open('../output/ntrue.json')))
+nreco = json.load(open('../output/nreco.json'))
+nrecotrue = json.load(open('../output/nrecotrue.json'))
+nrecofalse = json.load(open('../output/nrecofalse.json'))
 
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -54,25 +14,39 @@ rc('text', usetex=True)
 
 from math import sqrt
 def efferr(k,N):
-    return sqrt(k*(1-float(k)/N))/N
+    return sqrt(k*(1-k/N))/N
+vefferr = vectorize(efferr)
 
-effarea = float(nrecotrue['j0'])/nreco['j0']
-effareaerr = efferr(nrecotrue['j0'],nreco['j0'])
-mistagarea = float(nrecofalse['j0'])/nreco['j0']
-mistagareaerr = efferr(nrecofalse['j0'],nreco['j0'])
+ptbins = [25,35,45,55,65,75,85,95]
 
-print effarea,mistagarea
+def ploteff(key,label):
+    recotrue = array(nrecotrue[key])
+    eff = recotrue/ntrue
+    err = vefferr(recotrue,ntrue)
+    plt.errorbar(ptbins,eff,yerr=err,
+                 fmt='o',label=label)
 
-plt.errorbar(effarea,mistagarea,xerr=effareaerr,yerr=mistagareaerr,
-             fmt='o',label='area subtraction')
+def plotmistag(key,label):
+    recofalse = array(nrecofalse[key])
+    reco = nreco[key]
+    mistag = recofalse/reco
+    err = vefferr(recofalse,reco)
+    plt.errorbar(ptbins,mistag,yerr=err,
+                 fmt='o',label=label)
 
-effjvf = float(nrecotrue['j5'])/nreco['j5']
-effjvferr = efferr(nrecotrue['j5'],nreco['j5'])
-mistagjvf = float(nrecofalse['j5'])/nreco['j5']
-mistagjvferr = efferr(nrecofalse['j5'],nreco['j5'])
-plt.errorbar(effjvf,mistagjvf,xerr=effjvferr,yerr=mistagjvferr,
-             fmt='o',label='cluster JVF + area subtraction')
+for k,l in zip(keys,labels):
+    ploteff(k,l)
+plt.ylabel('Efficiency')
+plt.xlabel('jet $p_T$ [GeV]')
+plt.legend(frameon=False,numpoints=1,loc="upper right")
+plt.ylim([0.1,0.4])
+plt.savefig('../plots/efficiencies.png')
+plt.close()
 
-print effjvf,mistagjvf
-plt.legend(frameon=False,numpoints=1)
-plt.savefig('../plots/efficiencies')
+for k,l in zip(keys,labels):
+    plotmistag(k,l)
+plt.ylabel('Fake rate')
+plt.xlabel('jet $p_T$ [GeV]')
+plt.ylim([0.,1.])
+plt.legend(frameon=False,numpoints=1,loc="upper right")
+plt.savefig('../plots/mistags.png')
