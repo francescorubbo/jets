@@ -3,8 +3,9 @@ from numpy import load,mean,std,array,median
 pltdir = '../plots/'
 
 ptbin = 'pt60100'
+jetr = 'lj'
 
-jettypes = ['jnoarea0','jnoarea5','j0','j5']
+jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
 
 keys = [35,45,55,65]
@@ -44,7 +45,7 @@ def plotvar(var):
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][0])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+'j'+var+'vsnpvmean'+'_'+ptbin+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'.png')
     plt.close()
 
     for jt,l in zip(jettypes,labels):
@@ -56,9 +57,8 @@ def plotvar(var):
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][1])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+'j'+var+'vsnpvstd_'+ptbin+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvstd_'+ptbin+'.png')
     plt.close()
-
 
 for var in ['res','mass','width']:
     plotvar(var)
