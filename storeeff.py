@@ -2,7 +2,12 @@ import ROOT as r
 from sys import stdout
 from math import fabs
 
-filename = '../data/mc12_14TeV_Pythia8_J2_ITK_140_140.root'
+mu = 'mu20'
+
+samp = {'mu140':'mc12_14TeV_Pythia8_J2_ITK_140_140.root',
+        'mu20':'PythiaJ2mc12aJETMET.root'}
+
+filename = '../data/'+samp[mu]
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -38,7 +43,7 @@ print
 
 from numpy import histogram, histogram2d
 
-binedges = [-10,0,20,30,40,50,60,70,80,90,100]
+binedges = [-10,10,20,30,40,50,60,70,80,90,100]
 bintrue = histogram(ntrue,binedges)[0][2::].tolist()
 binrecotrue = {}
 binrecofalse = {}
@@ -54,12 +59,12 @@ for k in keys:
     binrecotrue[k] = [rt if rt<t else t for t,rt in zip(bintrue,binrecotrue[k])]
 
 import json
-with open('../output/ntrue.json','w') as outfile:
+with open('../output/ntrue_'+mu+'.json','w') as outfile:
     json.dump(bintrue,outfile)
-with open('../output/nreco.json','w') as outfile:
+with open('../output/nreco_'+mu+'.json','w') as outfile:
     json.dump(binreco,outfile)
-with open('../output/nrecofalse.json','w') as outfile:
+with open('../output/nrecofalse_'+mu+'.json','w') as outfile:
     json.dump(binrecofalse,outfile)
-with open('../output/nrecotrue.json','w') as outfile:
+with open('../output/nrecotrue_'+mu+'.json','w') as outfile:
     json.dump(binrecotrue,outfile)
 

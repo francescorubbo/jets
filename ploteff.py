@@ -1,12 +1,14 @@
 keys = ['jnoarea0','jnoarea5','j0','j5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
 
+mu = 'mu20'
+
 import json
 from numpy import array,vectorize
-ntrue = array(json.load(open('../output/ntrue.json')))
-nreco = json.load(open('../output/nreco.json'))
-nrecotrue = json.load(open('../output/nrecotrue.json'))
-nrecofalse = json.load(open('../output/nrecofalse.json'))
+ntrue = array(json.load(open('../output/ntrue_'+mu+'.json')))
+nreco = json.load(open('../output/nreco_'+mu+'.json'))
+nrecotrue = json.load(open('../output/nrecotrue_'+mu+'.json'))
+nrecofalse = json.load(open('../output/nrecofalse_'+mu+'.json'))
 
 import matplotlib.pyplot as plt
 plt.style.use('atlas')
@@ -43,14 +45,14 @@ for k,l in zip(keys,labels):
 plt.ylabel('Efficiency')
 plt.xlabel('jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
-plt.ylim([0.1,1.1])
-plt.savefig('../plots/efficiencies.png')
+#plt.ylim([0.,1.1])
+plt.savefig('../plots/efficiencies_'+mu+'.png')
 plt.close()
 
 for k,l in zip(keys,labels):
     plotmistag(k,l)
 plt.ylabel('Fake rate')
 plt.xlabel('jet $p_T$ [GeV]')
-plt.ylim([0.,1.])
+#plt.ylim([0.,1.])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
-plt.savefig('../plots/mistags.png')
+plt.savefig('../plots/mistags_'+mu+'.png')
