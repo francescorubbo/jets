@@ -2,22 +2,22 @@ from numpy import load,mean,std,array,median
 
 pltdir = '../plots/'
 
-ptbin = 'pt2030'
+ptbin = 'pt60100'
 
 jettypes = ['jnoarea0','jnoarea5','j0','j5']
-labels = ['inclusive','cluster $JVF>0.5$','area correction','cluster $JVF>0.5$ + area correction']
+labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
 
 keys = [35,45,55,65]
 
 def getmeans(jet='j0',var='res'):
-    resdict = load('../output/resvsnpv_'+jet+'_'+ptbin+'.npy')
+    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'.npy')
     resdict = resdict[()]
     y = [mean(resdict[k]) for k in keys]
     x = [k-5 for k in keys]
     return x,y
 
 def getstds(jet='j0',var='res'):
-    resdict = load('../output/resvsnpv_'+jet+'_'+ptbin+'.npy')
+    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'.npy')
     resdict = resdict[()]
     y = [std(resdict[k]) for k in keys]
     x = [k-5 for k in keys]

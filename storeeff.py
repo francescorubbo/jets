@@ -14,6 +14,7 @@ keys = ['j0','j5','jnoarea0','jnoarea5']
 ntrue = []
 nreco      = {k: [] for k in keys}
 nrecotrue  = {k: [] for k in keys}
+nrecofalse  = {k: [] for k in keys}
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -23,17 +24,17 @@ for jentry in xrange(nentries):
         stdout.flush()
 
     for k in keys:
-        for jeta,jpt,tjpt in zip(getattr(tree,'%seta'%k),getattr(tree,'%spt'%k),getattr(tree,'t%spt'%k)):
+        for jeta,jpt,tjpt,tjeta in zip(getattr(tree,'%seta'%k),getattr(tree,'%spt'%k),getattr(tree,'t%spt'%k),getattr(tree,'t%seta'%k)):
+            if fabs(tjeta)<1.0:
+                nrecotrue[k].append(tjpt)
             if fabs(jeta)>1.0: continue
-
+            nrecofalse[k].append(tjpt)
             nreco[k].append(jpt)
-            nrecotrue[k].append(tjpt)
- 
+
     for tpt,teta in zip(tree.truejetpt,tree.truejeteta):
         if fabs(teta)>1.0: continue
         ntrue.append(tpt)
 print
-
 
 from numpy import histogram, histogram2d
 
@@ -44,11 +45,13 @@ binrecofalse = {}
 binreco = {}
 
 for k in keys:
-    recovstrue = histogram2d(nrecotrue[k],nreco[k],binedges)[0]
-    binreco[k] = recovstrue.sum(axis=0)[2::].tolist()
+    binreco[k] = histogram(nreco[k],binedges)[0][2::].tolist()
+    
+    recovstrue = histogram2d(nrecofalse[k],nreco[k],binedges)[0]
     binrecofalse[k] = recovstrue[0][2::].tolist()
-    binrecotrue[k] = recovstrue.diagonal()[2::].tolist()
 
+    binrecotrue[k] = [float(x) for x in histogram(nrecotrue[k],binedges)[0][2::]]
+    binrecotrue[k] = [rt if rt<t else t for t,rt in zip(bintrue,binrecotrue[k])]
 
 import json
 with open('../output/ntrue.json','w') as outfile:

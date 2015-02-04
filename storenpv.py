@@ -1,5 +1,5 @@
 import ROOT as r
-from sys import stdout
+from sys import stdout,argv
 filename = '../data/mc12_14TeV_Pythia8_J2_ITK_140_140.root'
 
 ff = r.TFile(filename)
@@ -12,11 +12,11 @@ resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-ptmin = 20
-ptmax = 30
+ptmin = 60
+ptmax = 100
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
-jet = 'j0'
+jet = argv[1]
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -46,7 +46,7 @@ for jentry in xrange(nentries):
         if npv<cut:
             resdict[cut] += resjets
             massdict[cut] += massjets
-            widthdict[cut] += massjets
+            widthdict[cut] += widthjets
             break
 
 
