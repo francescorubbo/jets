@@ -1,10 +1,11 @@
 import ROOT as r
 from sys import stdout
-filename = '../data/PythJXmc12aJETMETshort.root'
+filename = '../data/mc12_14TeV_Pythia8_J2_ITK_140_140.root'
 
 ff = r.TFile(filename)
 tree = ff.Get('tree1/tree')
 nentries = tree.GetEntries()
+nentries = 50000
 
 nhs = 0
 npu = 0
@@ -14,8 +15,7 @@ cutkeys = ['%1.2f'%cut for cut in cuts]
 nhsjvt = dict(zip(cutkeys,[0]*len(cuts)))
 npujvt = dict(zip(cutkeys,[0]*len(cuts)))
 
-#for jentry in xrange(nentries):
-for jentry in xrange(10000):
+for jentry in xrange(nentries):
     
     tree.GetEntry(jentry)
 
@@ -25,8 +25,8 @@ for jentry in xrange(10000):
 
     for jpt,jeta,tjpt,jvt in zip(tree.jpt,tree.jeta,tree.tjpt,tree.jb2bjvt):
         if jeta<2.5: continue
-        if jpt<40.: continue
-        if jpt>50.: continue
+        if jpt<20.: continue
+        if jpt>30.: continue
 
         if tjpt>0.:
             nhs += 1
@@ -47,7 +47,7 @@ def efferr(k,N):
 efficiency = [float(nhsjvt[cut])/nhs for cut in cutkeys]
 efficiencyerr = [efferr(nhsjvt[cut],nhs) for cut in cutkeys]
 mistag = [float(npujvt[cut])/npu for cut in cutkeys]
-mistagerr = [efferr(npujvt[cut],nhs) for cut in cutkeys]
+mistagerr = [efferr(npujvt[cut],npu) for cut in cutkeys]
 
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -57,5 +57,5 @@ plt.errorbar(efficiency,mistag,xerr=efficiencyerr,yerr=mistagerr,fmt='o--')
 plt.xlabel('Efficiency')
 plt.ylabel('Fake Rate')
 
-plt.savefig('../plots/b2bjvt_pt4050.png')
+plt.savefig('../plots/b2bjvt_pt2030.png')
 
