@@ -2,8 +2,9 @@ from numpy import load,mean,std,array,median
 
 pltdir = '../plots/'
 
-ptbin = 'pt60100'
-jetr = 'lj'
+ptbin = 'pt2030'
+jetr = 'j'
+mu = 'mu140'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
@@ -11,14 +12,14 @@ labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction
 keys = [35,45,55,65]
 
 def getmeans(jet='j0',var='res'):
-    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'.npy')
+    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.npy')
     resdict = resdict[()]
     y = [mean(resdict[k]) for k in keys]
     x = [k-5 for k in keys]
     return x,y
 
 def getstds(jet='j0',var='res'):
-    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'.npy')
+    resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.npy')
     resdict = resdict[()]
     y = [std(resdict[k]) for k in keys]
     x = [k-5 for k in keys]
@@ -41,11 +42,11 @@ def plotvar(var):
         jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l)
 
 #plt.ylim([-10,0])
-    plt.xlim([25,65])
+    plt.xlim([min(keys)-5,max(keys)+5])
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][0])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'_'+mu+'.png')
     plt.close()
 
     for jt,l in zip(jettypes,labels):
@@ -53,11 +54,11 @@ def plotvar(var):
         jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l)
 
 #plt.ylim([0,10])
-    plt.xlim([25,65])
+    plt.xlim([min(keys)-5,max(keys)+5])
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][1])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+jetr+var+'vsnpvstd_'+ptbin+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvstd_'+ptbin+'_'+mu+'.png')
     plt.close()
 
 for var in ['res','mass','width']:
