@@ -21,6 +21,9 @@ nreco      = {k: [] for k in keys}
 nrecotrue  = {k: [] for k in keys}
 nrecofalse  = {k: [] for k in keys}
 
+from jetutils import Calibration
+calibdict = {key: Calibration(key,mu) for key in keys}
+
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
 
@@ -34,7 +37,7 @@ for jentry in xrange(nentries):
                 nrecotrue[k].append(tjpt)
             if fabs(jeta)>1.0: continue
             nrecofalse[k].append(tjpt)
-            nreco[k].append(jpt)
+            nreco[k].append(calibdict[k].getpt(jpt))
 
     for tpt,teta in zip(tree.truejetpt,tree.truejeteta):
         if fabs(teta)>1.0: continue

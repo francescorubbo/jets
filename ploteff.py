@@ -24,6 +24,7 @@ ptbins = [25,35,45,55,65,75,85,95]
 
 def ploteff(key,label):
     recotrue = array(nrecotrue[key])
+    print key
     print recotrue
     print ntrue
     eff = recotrue/ntrue
@@ -45,7 +46,7 @@ for k,l in zip(keys,labels):
 plt.ylabel('Efficiency')
 plt.xlabel('jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
-#plt.ylim([0.,1.1])
+plt.ylim([0.9,1.01])
 plt.savefig('../plots/efficiencies_'+mu+'.png')
 plt.close()
 
@@ -53,6 +54,6 @@ for k,l in zip(keys,labels):
     plotmistag(k,l)
 plt.ylabel('Fake rate')
 plt.xlabel('jet $p_T$ [GeV]')
-#plt.ylim([0.,1.])
+plt.ylim([0.,.8])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
 plt.savefig('../plots/mistags_'+mu+'.png')
