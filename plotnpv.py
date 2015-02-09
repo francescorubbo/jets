@@ -4,12 +4,13 @@ pltdir = '../plots/'
 
 ptbin = 'pt2030'
 jetr = 'j'
-mu = 'mu140'
+mu = 'mu20'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
 
-keys = [35,45,55,65]
+#keys = [35,45,55,65]
+keys = [15,25,35,45]
 
 def getmeans(jet='j0',var='res'):
     resdict = load('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.npy')
@@ -50,11 +51,11 @@ def plotvar(var):
     plt.close()
 
     for jt,l in zip(jettypes,labels):
-        x,y = getstds(jt)
+        x,y = getstds(jt,var)
         jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l)
 
 #plt.ylim([0,10])
-    plt.xlim([min(keys)-5,max(keys)+5])
+    plt.xlim([min(keys)-15,max(keys)+5])
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][1])
     plt.legend(loc='upper left',frameon=False,numpoints=1)

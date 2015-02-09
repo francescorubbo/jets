@@ -2,7 +2,7 @@ import ROOT as r
 from sys import stdout,argv
 
 from math import fabs
-mu = 'mu140'
+mu = 'mu20'
 samp = {'mu140':'mc12_14TeV_Pythia8_J2_ITK_140_140.root',
         'mu20':'PythiaJ2mc12aJETMET.root'}
 filename = '../data/'+samp[mu]
@@ -12,17 +12,21 @@ tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 nentries = 200000
 
-cuts = [35,45,55,65]
-#cuts = [10,15,20,25]
+#cuts = [35,45,55,65]
+cuts = [15,25,35,45]
 resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-ptmin = 20
-ptmax = 30
+ptmin = 60
+ptmax = 100
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]
+
+from jetutils import Calibration
+calib = Calibration(jet,mu)
+
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -33,7 +37,7 @@ for jentry in xrange(nentries):
 
     jpts = getattr(tree,'%spt'%jet)
     tjpts = getattr(tree,'t%spt'%jet)
-    tjetas = getattr(tree,'%seta'%jet) #HACK! This should be truth jet eta
+    tjetas = getattr(tree,'t%seta'%jet)
     jms = getattr(tree,'%smass'%jet)
     jws = getattr(tree,'%swidth'%jet)
 
@@ -43,12 +47,13 @@ for jentry in xrange(nentries):
     for jpt,tjpt,tjeta,jm,jw in zip(jpts,tjpts,tjetas,jms,jws):
         if fabs(tjeta)>1.0: continue
         if tjpt<ptmin or tjpt>ptmax: continue
-        resjets.append(jpt-tjpt)
+        calibpt = calib.getpt(jpt)
+        if calibpt<15: continue
+        resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
             
-
-    npv = tree.NPV
+    npv = tree.NPVtruth
 
     for cut in cuts:
         if npv<cut:
@@ -56,7 +61,6 @@ for jentry in xrange(nentries):
             massdict[cut] += massjets
             widthdict[cut] += widthjets
             break
-
 
 from numpy import save
 save('../output/resvsnpv_'+jet+'_'+ptbin+'_'+mu,resdict)
