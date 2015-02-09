@@ -34,6 +34,8 @@ def fitres(jet='j0'):
         n,bins,patches = plt.hist(resdata,normed=True,bins=50)
         y = gfunc.pdf( bins, mu, sigma)
         l = plt.plot(bins, y, 'r--', linewidth=2)
+        plt.xlabel('$p_T^{reco}/p_T^{true}$')
+        plt.ylabel('a.u.')
         plt.savefig('../plots/resbin%d_'%ptbin+jet+'_'+pu+'.png')
         plt.close()
         avgres.append(mu)
@@ -45,8 +47,9 @@ def fitres(jet='j0'):
     print pcov
     
     xp = linspace(20,200,100)
-    plt.plot(truepts,responses,'.',avgpt,avgres,'o',xp,func(xp,*popt),'r-')
-
+    plt.plot(recopts,responses,'.',avgpt,avgres,'o',xp,func(xp,*popt),'r-')
+    plt.xlabel('$p_T^{reco}$ [GeV]')
+    plt.ylabel('$p_T^{reco}/p_T^{true}$')
     plt.savefig('../plots/jetresponse_'+jet+'_'+pu+'.png')
     plt.close()
     return popt
