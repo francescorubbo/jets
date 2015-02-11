@@ -9,7 +9,7 @@ filename = '../data/'+samp[mu]
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
-nentries = 10
+nentries = 100
 
 cljvfs = []
 clpts = []
