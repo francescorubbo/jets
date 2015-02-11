@@ -13,20 +13,19 @@ nentries = tree.GetEntries()
 nentries = 200000
 
 #cuts = [35,45,55,65]
-cuts = [15,25,35,45]
+cuts = [15,20,25,30,35,40,45]
 resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-ptmin = 60
-ptmax = 100
+ptmin = 20
+ptmax = 30
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]
 
 from jetutils import Calibration
 calib = Calibration(jet,mu)
-
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -48,7 +47,7 @@ for jentry in xrange(nentries):
         if fabs(tjeta)>1.0: continue
         if tjpt<ptmin or tjpt>ptmax: continue
         calibpt = calib.getpt(jpt)
-        if calibpt<15: continue
+        if calibpt<8: continue
         resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
@@ -62,7 +61,10 @@ for jentry in xrange(nentries):
             widthdict[cut] += widthjets
             break
 
-from numpy import save
-save('../output/resvsnpv_'+jet+'_'+ptbin+'_'+mu,resdict)
-save('../output/massvsnpv_'+jet+'_'+ptbin+'_'+mu,massdict)
-save('../output/widthvsnpv_'+jet+'_'+ptbin+'_'+mu,widthdict)
+import json
+with open('../output/resvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
+    json.dump(resdict,outfile)
+with open('../output/massvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
+    json.dump(massdict,outfile)
+with open('../output/widthvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
+    json.dump(widthdict,outfile)
