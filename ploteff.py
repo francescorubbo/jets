@@ -1,5 +1,5 @@
-keys = ['jnoarea0','jnoarea5','j0','j5']
-labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
+keys = ['jnoarea0','jnoarea5','j0','j5','jvoro']
+labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)']
 
 mu = 'mu20'
 
