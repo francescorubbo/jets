@@ -2,7 +2,7 @@ import ROOT as r
 from sys import stdout,argv
 from math import fabs
 
-mu = 'mu20_clpt2'
+mu = 'mu20'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -34,7 +34,6 @@ for jentry in xrange(nentries):
     for jpt,tjpt,tjeta in zip(jpts,tjpts,tjetas):
         if fabs(tjeta)>1.0: continue
         if tjpt<20: continue
-        if jpt<10: continue
         resjet.append(jpt/tjpt)
         truept.append(tjpt)
         recopt.append(jpt)
@@ -44,7 +43,6 @@ for jentry in xrange(nentries):
     recopts += recopt
 
 print
-
 
 from numpy import save
 save('../output/responses_'+jet+'_'+mu,responses)
