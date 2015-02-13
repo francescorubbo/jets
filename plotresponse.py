@@ -3,7 +3,7 @@ from scipy.optimize import curve_fit
 from scipy.stats import norm
 
 pu = 'mu20'
-jets = ['j0','j5','jnoarea0','jnoarea5']
+jets = ['j0','j5','jnoarea0','jnoarea5','jvoro']
 
 def func(x,a,b):
     return b + a/log(x)
