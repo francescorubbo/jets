@@ -11,7 +11,9 @@ tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 nentries = 50000
 
-keys = ['j0','j5','jnoarea0','jnoarea5','jvoro']
+keys = ['j0','j5','jnoarea0','jnoarea5','jvoro','jvt2','jvt4','jvt7']
+
+jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
 
 ntrue = []
 nreco      = {k: [] for k in keys}
@@ -19,7 +21,7 @@ nrecotrue  = {k: [] for k in keys}
 nrecofalse  = {k: [] for k in keys}
 
 from jetutils import Calibration
-calibdict = {key: Calibration(key,mu) for key in keys}
+calibdict = {key: Calibration(key,mu) for key in keys if 'jvt' not in key}
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -29,12 +31,23 @@ for jentry in xrange(nentries):
         stdout.flush()
 
     for k in keys:
-        for jeta,jpt,tjpt,tjeta in zip(getattr(tree,'%seta'%k),getattr(tree,'%spt'%k),getattr(tree,'t%spt'%k),getattr(tree,'t%seta'%k)):
+        jetname = k
+        dojvt = 'jvt' in jetname
+        if dojvt: jetname = 'j0'
+        for ijet,(jeta,jpt,tjpt,tjeta) in enumerate(
+            zip(getattr(tree,'%seta'%jetname),getattr(tree,'%spt'%jetname),getattr(tree,'t%spt'%jetname),getattr(tree,'t%seta'%jetname))):
+            if dojvt:
+                if tree.j0jvt[ijet]>0. and tree.j0jvt[ijet]<jvtcut[k]:
+                    continue
+
             if fabs(tjeta)<1.0:
                 nrecotrue[k].append(tjpt)
             if fabs(jeta)>1.0: continue
             nrecofalse[k].append(tjpt)
-            nreco[k].append(calibdict[k].getpt(jpt))
+            calibpt = jpt
+            if not dojvt:
+                calibpt = calibdict[k].getpt(jpt)
+            nreco[k].append(calibpt)
 
     for tpt,teta in zip(tree.truejetpt,tree.truejeteta):
         if fabs(teta)>1.0: continue
