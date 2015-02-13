@@ -2,12 +2,9 @@ import ROOT as r
 from sys import stdout
 from math import fabs
 
-mu = 'mu20'
-
-samp = {'mu140':'mc12_14TeV_Pythia8_J2_ITK_140_140.root',
-        'mu20':'PythiaJ2mc12aJETMET.root'}
-
-filename = '../data/'+samp[mu]
+mu = 'mu20_clpt2'
+from dataset import getsamp
+filename = '../data/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
