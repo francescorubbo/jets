@@ -2,7 +2,7 @@ import ROOT as r
 from sys import stdout
 from math import fabs
 
-mu = 'mu20_clpt2'
+mu = 'mu20'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -11,7 +11,7 @@ tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 nentries = 50000
 
-keys = ['j0','j5','jnoarea0','jnoarea5']
+keys = ['j0','j5','jnoarea0','jnoarea5','jvoro']
 
 ntrue = []
 nreco      = {k: [] for k in keys}
@@ -56,7 +56,6 @@ for k in keys:
     binrecofalse[k] = recovstrue[0][2::].tolist()
 
     binrecotrue[k] = [float(x) for x in histogram(nrecotrue[k],binedges)[0][2::]]
-    binrecotrue[k] = [rt if rt<t else t for t,rt in zip(bintrue,binrecotrue[k])]
 
 import json
 with open('../output/ntrue_'+mu+'.json','w') as outfile:
