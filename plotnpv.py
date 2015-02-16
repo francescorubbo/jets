@@ -10,8 +10,9 @@ ptbin = 'pt2030'
 jetr = 'j'
 mu = 'mu20'
 
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
-labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction']
+jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
+labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
+          r'Voronoi ($p_T>\rho\cdot A$)']
 
 #keys = [35,45,55,65]
 keys = [20,25,30,35,40]
