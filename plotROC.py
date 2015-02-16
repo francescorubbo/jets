@@ -1,11 +1,17 @@
 import ROOT as r
 from sys import stdout
-filename = '../data/mc12_14TeV_Pythia8_J2_ITK_140_140.root'
+
+mu = 'mu20'
+from dataset import getsamp
+filename = '../data/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree1/tree')
 nentries = tree.GetEntries()
-nentries = 50000
+
+ptmin = 60
+ptmax = 100
+ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 nhs = 0
 npu = 0
@@ -25,8 +31,8 @@ for jentry in xrange(nentries):
 
     for jpt,jeta,tjpt,jvt in zip(tree.jpt,tree.jeta,tree.tjpt,tree.jb2bjvt):
         if jeta<2.5: continue
-        if jpt<20.: continue
-        if jpt>30.: continue
+        if jpt<ptmin: continue
+        if jpt>ptmax: continue
 
         if tjpt>0.:
             nhs += 1
@@ -57,5 +63,5 @@ plt.errorbar(efficiency,mistag,xerr=efficiencyerr,yerr=mistagerr,fmt='o--')
 plt.xlabel('Efficiency')
 plt.ylabel('Fake Rate')
 
-plt.savefig('../plots/b2bjvt_pt2030.png')
+plt.savefig('../plots/b2bjvt_'+ptbin+'.png')
 
