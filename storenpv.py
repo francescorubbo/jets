@@ -2,14 +2,14 @@ import ROOT as r
 from sys import stdout,argv
 
 from math import fabs
-mu = 'mu20_clpt2'
+mu = 'mu20'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
-nentries = 200000
+#nentries = 200000
 
 #cuts = [35,45,55,65]
 cuts = [15,20,25,30,35,40,45]
@@ -17,8 +17,8 @@ resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-ptmin = 60
-ptmax = 100
+ptmin = 20
+ptmax = 30
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]
@@ -46,7 +46,7 @@ for jentry in xrange(nentries):
         if fabs(tjeta)>1.0: continue
         if tjpt<ptmin or tjpt>ptmax: continue
         calibpt = calib.getpt(jpt)
-        if calibpt<8: continue
+#        if calibpt<8: continue
         resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
