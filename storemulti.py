@@ -1,0 +1,56 @@
+import ROOT as r
+from sys import stdout,argv
+from math import fabs
+
+jet = argv[1]
+
+mu = 'mu20'
+from dataset import getsamp
+filename = '../data/'+getsamp(mu)
+
+ff = r.TFile(filename)
+tree = ff.Get('tree0/tree')
+nentries = tree.GetEntries()
+
+cuts = [15,20,25,30,35,40,45]
+clperjetdict = {c:[] for c in cuts}
+jetperevtdict = {c:[] for c in cuts}
+
+from jetutils import Calibration
+calib = Calibration(jet,mu)
+
+for jentry in xrange(nentries):
+    tree.GetEntry(jentry)
+
+    if not jentry%1000:
+        stdout.write('\r%d'%jentry)
+        stdout.flush()
+    
+    jpts = getattr(tree,'%spt'%jet)
+    jetas = getattr(tree,'%seta'%jet)
+    ncls = getattr(tree,'%sncl'%jet)
+
+    njets = 0
+    clperjet = []
+
+    for ncl,jpt,jeta in zip(ncls,jpts,jetas):
+        if fabs(jeta)>1.0: continue
+        if calib.getpt(jpt)<20.: continue
+        njets+=1
+        clperjet.append(ncl)
+    
+    if njets<1 : continue
+    
+    npv = tree.NPVtruth
+
+    for cut in cuts:
+        if npv<cut:
+            clperjetdict[cut] += clperjet
+            jetperevtdict[cut].append(njets)
+            break
+
+import json
+with open('../output/clperjetvsnpv_'+jet+'_'+mu+'.json','w') as outfile:
+    json.dump(clperjetdict,outfile)
+with open('../output/jetperevtvsnpv_'+jet+'_'+mu+'.json','w') as outfile:
+    json.dump(jetperevtdict,outfile)
