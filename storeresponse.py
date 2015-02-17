@@ -17,6 +17,9 @@ responses = []
 truepts = []
 recopts = []
 
+from jetutils import NPVCorrection
+npvcorr = NPVCorrection(jet,mu)
+
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
     
@@ -27,6 +30,7 @@ for jentry in xrange(nentries):
     jpts = getattr(tree,'%spt'%jet)
     tjpts = getattr(tree,'t%spt'%jet)
     tjetas = getattr(tree,'t%seta'%jet)
+    npv = tree.NPVtruth
 
     resjet = []
     truept = []
@@ -34,9 +38,10 @@ for jentry in xrange(nentries):
     for jpt,tjpt,tjeta in zip(jpts,tjpts,tjetas):
         if fabs(tjeta)>1.0: continue
         if tjpt<20: continue
-        resjet.append(jpt/tjpt)
+        corrpt = npvcorr.getpt(jpt,npv)
+        resjet.append(corrpt/tjpt)
         truept.append(tjpt)
-        recopt.append(jpt)
+        recopt.append(corrpt)
 
     responses += resjet
     truepts += truept
