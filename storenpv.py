@@ -9,10 +9,8 @@ filename = '../data/'+getsamp(mu)
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
-#nentries = 200000
 
-#cuts = [35,45,55,65]
-cuts = [15,20,25,30,35,40,45]
+cuts = [10,15,20,25,30,35,40,45]
 resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
@@ -51,7 +49,6 @@ for jentry in xrange(nentries):
         if tjpt<ptmin or tjpt>ptmax: continue
         calibpt = npvcorr.getpt(jpt,npv)
         calibpt = calib.getpt(calibpt)
-#        if calibpt<8: continue
         resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
