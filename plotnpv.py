@@ -11,6 +11,7 @@ jetr = 'j'
 mu = 'mu20'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
+jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
@@ -38,14 +39,14 @@ def fitgaus(data,jet):
 def getmeans(jet='j0',var='res'):
     resdict = json.load(open('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.json'))
     y = [mean(resdict['%d'%k]) for k in keys]
-    x = [k for k in keys]
+    x = [k-2.5 for k in keys]
     return x,y
 
 def getstds(jet='j0',var='res'):
     resdict = json.load(open('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.json'))
     y = [std(resdict['%d'%k]) for k in keys]
 #    y = [fitgaus(resdict['%d'%k],jet) for k in keys]
-    x = [k for k in keys]
+    x = [k-2.5 for k in keys]
     return x,y
     
 def plotvar(var):
