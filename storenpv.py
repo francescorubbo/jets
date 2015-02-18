@@ -23,8 +23,9 @@ ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]
 
-from jetutils import Calibration
+from jetutils import Calibration,NPVCorrection
 calib = Calibration(jet,mu)
+npvcorr = NPVCorrection(jet,mu)
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -42,17 +43,19 @@ for jentry in xrange(nentries):
     resjets = []
     massjets = []
     widthjets = []
+    
+    npv = tree.NPVtruth
+
     for jpt,tjpt,tjeta,jm,jw in zip(jpts,tjpts,tjetas,jms,jws):
         if fabs(tjeta)>1.0: continue
         if tjpt<ptmin or tjpt>ptmax: continue
-        calibpt = calib.getpt(jpt)
+        calibpt = npvcorr.getpt(jpt,npv)
+        calibpt = calib.getpt(calibpt)
 #        if calibpt<8: continue
         resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
             
-    npv = tree.NPVtruth
-
     for cut in cuts:
         if npv<cut:
             resdict[cut] += resjets
