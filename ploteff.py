@@ -1,5 +1,8 @@
 keys = ['jnoarea0','jnoarea5','j0','j5','jvoro','jvt2','jvt4','jvt7']
+keys = ['jnoarea0','jnoarea5','j0','j5','jvt2','jvt4','jvt7']
 labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
+          'area correction + $|JVT|>0.2$','area correction + $|JVT|>0.4$','area correction + $|JVT|>0.7$']
+labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',
           'area correction + $|JVT|>0.2$','area correction + $|JVT|>0.4$','area correction + $|JVT|>0.7$']
 
 mu = 'mu20'
@@ -55,6 +58,6 @@ for k,l in zip(keys,labels):
     plotmistag(k,l)
 plt.ylabel('Fake rate')
 plt.xlabel('jet $p_T$ [GeV]')
-plt.ylim([0.,.8])
+plt.ylim([0.,0.6])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
 plt.savefig('../plots/mistags_'+mu+'.png')
