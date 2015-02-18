@@ -4,6 +4,10 @@ from math import fabs
 
 jet = argv[1]
 
+ptmin = 20
+ptmax = 30
+ptbin = 'pt%d%d'%(ptmin,ptmax)
+
 mu = 'mu20'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
@@ -40,7 +44,8 @@ for jentry in xrange(nentries):
         if fabs(jeta)>1.0: continue
         calibpt = npvcorr.getpt(jpt,npv)
         calibpt = calib.getpt(calibpt)
-        if calibpt<20.: continue
+        if calibpt<ptmin.: continue
+        if calibpt>ptmax.: continue
         njets+=1
         clperjet.append(ncl)
     
@@ -53,7 +58,7 @@ for jentry in xrange(nentries):
             break
 
 import json
-with open('../output/clperjetvsnpv_'+jet+'_'+mu+'.json','w') as outfile:
+with open('../output/clperjetvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
     json.dump(clperjetdict,outfile)
-with open('../output/jetperevtvsnpv_'+jet+'_'+mu+'.json','w') as outfile:
+with open('../output/jetperevtvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
     json.dump(jetperevtdict,outfile)
