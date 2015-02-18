@@ -16,8 +16,9 @@ cuts = [15,20,25,30,35,40,45]
 clperjetdict = {c:[] for c in cuts}
 jetperevtdict = {c:[] for c in cuts}
 
-from jetutils import Calibration
+from jetutils import Calibration,NPVCorrection
 calib = Calibration(jet,mu)
+npvcorr = NPVCorrection(jet,mu)
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -33,16 +34,18 @@ for jentry in xrange(nentries):
     njets = 0
     clperjet = []
 
+    npv = tree.NPVtruth
+
     for ncl,jpt,jeta in zip(ncls,jpts,jetas):
         if fabs(jeta)>1.0: continue
-        if calib.getpt(jpt)<20.: continue
+        calibpt = npvcorr.getpt(jpt,npv)
+        calibpt = calib.getpt(calibpt)
+        if calibpt<20.: continue
         njets+=1
         clperjet.append(ncl)
     
     if njets<1 : continue
     
-    npv = tree.NPVtruth
-
     for cut in cuts:
         if npv<cut:
             clperjetdict[cut] += clperjet

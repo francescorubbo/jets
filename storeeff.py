@@ -12,6 +12,7 @@ nentries = tree.GetEntries()
 nentries = 50000
 
 keys = ['j0','j5','jnoarea0','jnoarea5','jvoro','jvt2','jvt4','jvt7']
+keys = ['j0','j5','jnoarea0','jnoarea5','jvt2','jvt4','jvt7']
 
 jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
 
@@ -20,8 +21,9 @@ nreco      = {k: [] for k in keys}
 nrecotrue  = {k: [] for k in keys}
 nrecofalse  = {k: [] for k in keys}
 
-from jetutils import Calibration
+from jetutils import Calibration,NPVCorrection
 calibdict = {key: Calibration(key,mu) for key in keys if 'jvt' not in key}
+npvcorrdict = {key: NPVCorrection(key,mu) for key in keys if 'jvt' not in key}
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -29,6 +31,8 @@ for jentry in xrange(nentries):
     if not jentry%1000:
         stdout.write('\r%d/%d'%(jentry,nentries))
         stdout.flush()
+
+    npv = tree.NPVtruth
 
     for k in keys:
         jetname = k
@@ -46,7 +50,8 @@ for jentry in xrange(nentries):
             nrecofalse[k].append(tjpt)
             calibpt = jpt
             if not dojvt:
-                calibpt = calibdict[k].getpt(jpt)
+                calibpt = npvcorrdict[k].getpt(calibpt,npv)
+                calibpt = calibdict[k].getpt(calibpt)
             nreco[k].append(calibpt)
 
     for tpt,teta in zip(tree.truejetpt,tree.truejeteta):
