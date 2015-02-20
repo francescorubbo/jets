@@ -2,6 +2,8 @@ from numpy import load,mean,std,array,median
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
+
 from scipy.stats import norm
 
 pltdir = '../plots/'
@@ -11,7 +13,6 @@ jetr = 'j'
 mu = 'mu20'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
