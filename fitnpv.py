@@ -2,6 +2,8 @@ from numpy import load,mean,linspace
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
+
 from scipy.stats import norm
 
 pltdir = '../plots/'
@@ -11,7 +13,6 @@ jetr = 'j'
 mu = 'mu20'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
@@ -43,7 +44,7 @@ def plotvar(var):
         plt.figure(0)
         jetplot = plt.plot(x,y,'o',label=l)
         xp = linspace(15,40)
-        plt.plot(xp,func(xp,*popt),'-')
+        plt.plot(xp,func(xp,*popt),'-',color=jetplot[0].get_color())
         npvcorrs[jt] = popt.tolist()
 
     with open('../output/npvcorrection_'+mu+'.json','w') as outfile:
