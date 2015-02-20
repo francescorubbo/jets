@@ -16,7 +16,7 @@ ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 
-cuts = [15,20,25,30,35,40,45]
+cuts = [10,15,20,25,30,35,40,45]
 clperjetdict = {c:[] for c in cuts}
 jetperevtdict = {c:[] for c in cuts}
 
@@ -44,8 +44,8 @@ for jentry in xrange(nentries):
         if fabs(jeta)>1.0: continue
         calibpt = npvcorr.getpt(jpt,npv)
         calibpt = calib.getpt(calibpt)
-        if calibpt<ptmin.: continue
-        if calibpt>ptmax.: continue
+        if calibpt<ptmin: continue
+        if calibpt>ptmax: continue
         njets+=1
         clperjet.append(ncl)
     
