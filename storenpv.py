@@ -15,15 +15,17 @@ resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-ptmin = 20
-ptmax = 30
+derivenpvcorr = False
+ptmin = 20 if not derivenpvcorr else 20
+ptmax = 30 if not derivenpvcorr else 1000
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]
 
 from jetutils import Calibration,NPVCorrection
-calib = Calibration(jet,mu)
-npvcorr = NPVCorrection(jet,mu)
+if not derivenpvcorr:
+    calib = Calibration(jet,mu)
+    npvcorr = NPVCorrection(jet,mu)
 
 for jentry in xrange(nentries):
     tree.GetEntry(jentry)
@@ -47,8 +49,11 @@ for jentry in xrange(nentries):
     for jpt,tjpt,tjeta,jm,jw in zip(jpts,tjpts,tjetas,jms,jws):
         if fabs(tjeta)>1.0: continue
         if tjpt<ptmin or tjpt>ptmax: continue
-        calibpt = npvcorr.getpt(jpt,npv)
-        calibpt = calib.getpt(calibpt)
+        if derivenpvcorr:
+            calibpt = jpt
+        else:
+            calibpt = npvcorr.getpt(jpt,npv)
+            calibpt = calib.getpt(calibpt)
         resjets.append(calibpt-tjpt)
         massjets.append(jm)
         widthjets.append(jw)
