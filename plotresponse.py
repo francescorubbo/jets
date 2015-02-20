@@ -13,6 +13,7 @@ ptedges = range(20,200,10)
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
 import matplotlib.mlab as mlab
 
 def fitres(jet='j0'):
