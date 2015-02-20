@@ -1,9 +1,6 @@
-keys = ['jnoarea0','jnoarea5','j0','j5','jvoro','jvt2','jvt4','jvt7']
-keys = ['jnoarea0','jnoarea5','j0','j5','jvt2','jvt4','jvt7']
+keys = ['jnoarea0','jnoarea5','j0','j5','jvoro','jvt7']
 labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
-          'area correction + $|JVT|>0.2$','area correction + $|JVT|>0.4$','area correction + $|JVT|>0.7$']
-labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',
-          'area correction + $|JVT|>0.2$','area correction + $|JVT|>0.4$','area correction + $|JVT|>0.7$']
+          'area correction + $|JVT|>0.7$']
 
 mu = 'mu20'
 
@@ -18,6 +15,7 @@ import matplotlib.pyplot as plt
 plt.style.use('atlas')
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
 
 from math import sqrt
 def efferr(k,N):
