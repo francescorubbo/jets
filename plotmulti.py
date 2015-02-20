@@ -2,6 +2,8 @@ from numpy import mean,std,array
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
+
 import json
 
 pltdir = '../plots/'
@@ -10,12 +12,11 @@ jetr = 'j'
 mu = 'mu20'
 
 jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
 #keys = [35,45,55,65]
-keys = [20,25,30,35,40]
+keys = [20,25,30,35,40,45]
 
 def getmeans(jet='j0',var='clperjet'):
     resdict = json.load(open('../output/'+var+'vsnpv_'+jet+'_'+mu+'.json'))
