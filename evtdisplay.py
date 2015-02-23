@@ -1,9 +1,9 @@
 import ROOT as r
 from numpy import array,absolute
-reco = False
+reco = True
 showClusters = False
 jet = 'j0' if reco else 'truejet'
-jvtcut = 0.7
+jvtcut = 0.
 
 mu = 'mu20'
 pu='PU80'
@@ -13,7 +13,7 @@ filename = '../data/PythJ1and2mc12aJETMET_short.root'
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
 
-tree.GetEntry(3758)
+tree.GetEntry(92368)
 
 jeteta = array([x for x in tree.truejeteta])
 jetphi = array([x for x in tree.truejetphi])
@@ -34,12 +34,15 @@ if reco:
     calib = Calibration(jet,mu) 
     npvcorr = NPVCorrection(jet,mu) 
     jetpt = array([calib.getpt(npvcorr.getpt(pt,npv)) for pt in jetpt])
+#    jetpt = array([pt for pt in jetpt])
 
 jeteta = jeteta[jetpt>20.]
 jetphi = jetphi[jetpt>20.]
 jetpt =  jetpt[jetpt>20.]
 
 print jetpt
+print jetphi
+print jeteta
 
 cleta = [x for x in tree.cleta]
 clphi = [x for x in tree.clphi]
