@@ -1,8 +1,8 @@
-from numpy import load,mean,linspace
+from numpy import load,mean,linspace,polyfit,poly1d
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
-plt.style.use('atlas')
+#plt.style.use('atlas')
 
 from scipy.stats import norm
 
@@ -12,7 +12,7 @@ ptbin = 'pt201000'
 jetr = 'j'
 mu = 'mu20'
 
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
+jettypes = [jetr+'voro']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
@@ -26,10 +26,6 @@ def getmeans(jet='j0',var='res'):
     y = [mean(resdict['%d'%k]) for k in keys]
     x = [k-2.5 for k in keys]
     return x,y
-
-from scipy.optimize import curve_fit
-def func(x,a,b):
-    return a+b*x
     
 def plotvar(var):
 
@@ -39,13 +35,13 @@ def plotvar(var):
     npvcorrs = {}
     for jt,l in zip(jettypes,labels):
         x,y = getmeans(jt,var)
-        popt, pcov = curve_fit(func, x, y)
-        print popt
+        fitpar = polyfit(x, y, 1)
+        func = poly1d(fitpar)
         plt.figure(0)
         jetplot = plt.plot(x,y,'o',label=l)
         xp = linspace(15,40)
-        plt.plot(xp,func(xp,*popt),'-',color=jetplot[0].get_color())
-        npvcorrs[jt] = popt.tolist()
+        plt.plot(xp,func(xp),'-',color=jetplot[0].get_color())
+        npvcorrs[jt] = fitpar.tolist()
 
     with open('../output/npvcorrection_'+mu+'.json','w') as outfile:
         json.dump(npvcorrs,outfile)
