@@ -7,10 +7,10 @@ matchedcl = load('../output/matchedcl_'+mu+'.npy')
 
 pltdir = '../plots/'
 
-
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
+plt.style.use('atlas')
 
 #hshighpt = cljvf[(matchedcl) & (clpt>2.)]
 #hslowpt = cljvf[(matchedcl) & (clpt<2.)]
