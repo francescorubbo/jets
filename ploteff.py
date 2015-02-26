@@ -1,6 +1,9 @@
-keys = ['jnoarea0','jnoarea5','j0','j5','jvoro','jvt7']
-labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
-          'area correction + $|JVT|>0.7$']
+#keys = ['jnoarea0','jnoarea5','j0','j5','jvoro','jvt7']
+#labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
+#          'area correction + $|JVT|>0.7$']
+
+keys = ['jvoro']
+labels = [r'Voronoi ($p_T>\rho\cdot A$)']
 
 mu = 'mu20'
 
@@ -12,10 +15,10 @@ nrecotrue = json.load(open('../output/nrecotrue_'+mu+'.json'))
 nrecofalse = json.load(open('../output/nrecofalse_'+mu+'.json'))
 
 import matplotlib.pyplot as plt
-plt.style.use('atlas')
+#plt.style.use('atlas')
 from matplotlib import rc
 rc('text', usetex=True)
-plt.style.use('atlas')
+#plt.style.use('atlas')
 
 from math import sqrt
 def efferr(k,N):
@@ -46,7 +49,7 @@ def plotmistag(key,label):
 for k,l in zip(keys,labels):
     ploteff(k,l)
 plt.ylabel('Efficiency')
-plt.xlabel('jet $p_T$ [GeV]')
+plt.xlabel('Truth jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
 plt.ylim([0.9,1.01])
 plt.savefig('../plots/efficiencies_'+mu+'.png')
@@ -55,7 +58,7 @@ plt.close()
 for k,l in zip(keys,labels):
     plotmistag(k,l)
 plt.ylabel('Fake rate')
-plt.xlabel('jet $p_T$ [GeV]')
+plt.xlabel('Reco jet $p_T$ [GeV]')
 plt.ylim([0.,0.6])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
 plt.savefig('../plots/mistags_'+mu+'.png')
