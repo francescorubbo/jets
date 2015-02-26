@@ -1,7 +1,7 @@
 import ROOT as r
 from sys import stdout,argv
 
-mu = 'mu20_b2bjvt'
+mu = 'mu20_b2bjvt_trkjet'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -46,7 +46,6 @@ for jentry in xrange(nentries):
             for cut in cuts:
                 if jvt>cut or jvt<0:
                     npujvt['%1.2f'%cut] += 1
-        
 
 from math import sqrt
 def efferr(k,N):
