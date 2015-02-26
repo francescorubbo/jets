@@ -11,7 +11,7 @@ tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 nentries = 50000
 
-keys = ['j0','j5','jnoarea0','jnoarea5','jvoro','jvt7']
+keys = ['jvoro']
 
 jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
 
