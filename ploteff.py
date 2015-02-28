@@ -2,8 +2,8 @@
 #labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
 #          'area correction + $|JVT|>0.7$']
 
-keys = ['jvoro']
-labels = [r'Voronoi ($p_T>\rho\cdot A$)']
+keys = ['jvoro','j0','jnoarea0']
+labels = [r'Voronoi ($p_T>\rho\cdot A + \sigma_{\rho}\cdot \sqrt{A}$)','Jet area correction','Inclusive']
 
 mu = 'mu20'
 
