@@ -6,7 +6,7 @@ Run plotresponse.py -> Coefficients of fits of response vs. PT (makes plots and 
 
 storeeff.py -> store yields vs. true PT (4 files)
 ploteff.py -> plot efficiences vs. PT, fake rate vs. PT
-storemulti.py -> clusters per jet, jets per event vs. NPV
+storemulti.py -> clusters per jet (mean+SD), jets per event vs. NPV (mean+SD)
 plotmulti.py -> plot
 
 storenpv.py with derivenpvcorr to False -> produces plot of offset vs. NPV, SD of offset vs. NPV
