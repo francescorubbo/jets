@@ -2,7 +2,7 @@ from numpy import load,mean,std,array,median,sqrt
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
-plt.style.use('atlas')
+#plt.style.use('atlas')
 
 from scipy.stats import norm
 
@@ -12,9 +12,10 @@ ptbin = 'pt2030'
 jetr = 'j'
 mu = 'mu20'
 
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
-labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
-          r'Voronoi ($p_T>\rho\cdot A$)']
+#jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
+#labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction', r'Voronoi ($p_T>\rho\cdot A$)']
+jettypes = [jetr+'voro',jetr+'0',jetr+'noarea0']
+labels = [r'Voronoi ($p_T>\rho\cdot A + \sigma_{\rho}\cdot \sqrt{A}$)','Jet area correction','Inclusive']
 
 #keys = [35,45,55,65]
 keys = [20,25,30,35,40,45]
