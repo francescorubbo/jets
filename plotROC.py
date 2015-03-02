@@ -3,12 +3,14 @@ plt.style.use('atlas')
 from matplotlib import rc
 rc('text', usetex=True)
 
-ptbin = 'pt2030'
+ptbin = 'pt3040'
 
-vars = ['jb2bjvt','jb2bcorrjvf','jb2brpt','jb2bjvt_trk','jb2bcorrjvf_trk','jb2brpt_trk']
 vars = ['jb2bcorrjvf','jb2bcorrjvf_trk2','jb2bcorrjvf_trk4']
 
 labeldict = {
+    'jjvt':'JVT',
+    'jcorrjvf':'corrJVF',
+    'jrpt':'$R_{p_T}$',
     'jb2bjvt':'B2BJVT',
     'jb2bcorrjvf':'B2BcorrJVF',
     'jb2brpt':'B2BRpT',
@@ -37,7 +39,8 @@ for var in vars:
 plt.xlabel('Efficiency')
 plt.ylabel('Fake Rate')
 plt.legend(loc='upper left')
-plt.xlim([0.6,1.0])
+plt.xlim([0.75,1.0])
+#plt.yscale('log')
 plt.ylim([0.4,1.0])
 plt.savefig('../plots/roc_'+ptbin+'.png')
 
