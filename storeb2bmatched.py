@@ -9,15 +9,22 @@ filename = '../data/'+getsamp(mu)
 ff = r.TFile(filename)
 tree = ff.Get('tree1/tree')
 nentries = tree.GetEntries()
-#nentries = 200000
+#nentries = 20000
 
-hsorpu = 'jishs'
+ctljettype = 'j'
+hsorpu = 'jispu'
 ptcuts = [10,15,20,25,30]
+dphicuts = [0.2,0.4,0.6,0.8,1.5]
+asymmcuts = [0.1,0.2,0.3,0.4,1.0]
+
+cuts = ['pt%d_dphi%1.1f_a%1.1f'%(pt,dphi,a) for pt in ptcuts for dphi in dphicuts for a in asymmcuts]
 
 fwdjetpts = []
-ctljetpts = {k:[] for k in ptcuts}
-ctljetispu = {k:[] for k in ptcuts}
-ctljetishs = {k:[] for k in ptcuts}
+ctljetfwdpts = {k:[] for k in cuts}
+ctljetpts = {k:[] for k in cuts}
+ctlfwddphi = {k:[] for k in cuts}
+ctljetispu = {k:[] for k in cuts}
+ctljetishs = {k:[] for k in cuts}
 
 for jentry in xrange(nentries):
 
@@ -44,32 +51,52 @@ for jentry in xrange(nentries):
     if fwdjetpt==0: continue
     fwdjetpts.append(fwdjetpt)
     
-    ctljet = {k:False for k in ptcuts}
-    ctlispu = {k:False for k in ptcuts}
-    ctlishs = {k:False for k in ptcuts}
-    maxdphi = {k:0. for k in ptcuts}
-    for jeta,jphi,jpt,ispu,ishs in zip(tree.jeta,tree.jphi,tree.jpt,tree.jispu,tree.jishs):
+    ctljet = {k:False for k in cuts}
+    ctljetpt = {k:0. for k in cuts}
+    ctlispu = {k:False for k in cuts}
+    ctlishs = {k:False for k in cuts}
+    maxdphi = {k:99. for k in cuts}
+    for jeta,jphi,jpt,ispu,ishs in zip(getattr(tree,ctljettype+'eta'),getattr(tree,ctljettype+'phi'),
+                                       getattr(tree,ctljettype+'pt'),getattr(tree,ctljettype+'ispu'),getattr(tree,ctljettype+'ishs')):
         if fabs(jeta)>2.4: continue
+
+        dphi = fabs(jphi-fwdjetphi)
+        if dphi>pi: dphi = 2*pi-dphi
+        dphi = pi-dphi 
+        
+        ptasymm = fabs(fwdjetpt-jpt)/(fwdjetpt+jpt)
+
         for ptcut in ptcuts:
             if jpt<ptcut: continue
-            dphi = fabs(jphi-fwdjetphi)
-            if dphi>pi: dphi = 2*pi-dphi
-            if dphi<2.: continue
-            if dphi>maxdphi[ptcut]:
-                ctljet[ptcut] = True
-                maxdphi[ptcut] = dphi
-                ctlispu[ptcut] = ispu
-                ctlishs[ptcut] = ishs
 
-    for ptcut in ptcuts:
-        if ctljet[ptcut]:
-            ctljetpts[ptcut].append(fwdjetpt)
-            ctljetispu[ptcut].append(ctlispu[ptcut])
-            ctljetishs[ptcut].append(ctlishs[ptcut])
+            for dphicut in dphicuts:
+                if dphi>dphicut: continue
+
+                for asymmcut in asymmcuts:
+                    if ptasymm>asymmcut: continue
+                    cut = 'pt%d_dphi%1.1f_a%1.1f'%(ptcut,dphicut,asymmcut)
+                    if dphi<maxdphi[cut]:
+                        ctljet[cut] = True
+                        ctljetpt[cut] = jpt
+                        maxdphi[cut] = dphi
+                        ctlispu[cut] = ispu
+                        ctlishs[cut] = ishs
+
+    for cut in cuts:
+        if ctljet[cut]:
+            ctljetpts[cut].append(ctljetpt[cut])
+            ctlfwddphi[cut].append(maxdphi[cut])
+            ctljetfwdpts[cut].append(fwdjetpt)
+            ctljetispu[cut].append(ctlispu[cut])
+            ctljetishs[cut].append(ctlishs[cut])
 
 import json
 with open('../output/fwdmatched_'+hsorpu+'.json','w') as outfile:
+    json.dump(ctljetfwdpts,outfile)
+with open('../output/ctlmatched_'+hsorpu+'.json','w') as outfile:
     json.dump(ctljetpts,outfile)
+with open('../output/dphimatched_'+hsorpu+'.json','w') as outfile:
+    json.dump(ctlfwddphi,outfile)
 with open('../output/fwdall_'+hsorpu+'.json','w') as outfile:
     json.dump(fwdjetpts,outfile)
 with open('../output/ctlispu_'+hsorpu+'.json','w') as outfile:
