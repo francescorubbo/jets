@@ -12,12 +12,12 @@ ptbin = 'pt201000'
 jetr = 'j'
 mu = 'mu20'
 
-jettypes = [jetr+'voro']
+jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
 labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
           r'Voronoi ($p_T>\rho\cdot A$)']
 
 #keys = [35,45,55,65]
-keys = [20,25,30,35,40]
+keys = [15,20,25,30,35,40,45]
 
 import json
 
@@ -39,7 +39,7 @@ def plotvar(var):
         func = poly1d(fitpar)
         plt.figure(0)
         jetplot = plt.plot(x,y,'o',label=l)
-        xp = linspace(15,40)
+        xp = linspace(10,45)
         plt.plot(xp,func(xp),'-',color=jetplot[0].get_color())
         npvcorrs[jt] = fitpar.tolist()
 
