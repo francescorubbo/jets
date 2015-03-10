@@ -2,7 +2,8 @@ import ROOT as r
 from sys import stdout,argv
 from math import sqrt,fabs
 
-mu = 'mu20_b2bjvt_jetpt20_trkjetpt5'
+mu = 'vbf_b2bjvt_jetpt20_trkjetpt5'
+#mu = 'vbf_b2bjvt_scan'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -11,16 +12,16 @@ var = argv[1]
 ff = r.TFile(filename)
 tree = ff.Get('tree1/tree')
 nentries = tree.GetEntries()
-nentries = 50000
+#nentries = 50000
 
-ptmin = 20
-ptmax = 30
+ptmin = 30
+ptmax = 40
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 nhs = 0
 npu = 0
 from numpy import arange,concatenate
-cuts = concatenate([arange(-0.01,1,0.01)])
+cuts = concatenate([arange(0.,1,0.01)])
 cutkeys = ['%1.2f'%cut for cut in cuts]
 nhsjvt = dict(zip(cutkeys,[0]*len(cuts)))
 npujvt = dict(zip(cutkeys,[0]*len(cuts)))
