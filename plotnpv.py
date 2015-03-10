@@ -12,12 +12,27 @@ ptbin = 'pt2030'
 jetr = 'j'
 mu = 'mu20'
 
-jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
-labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
-          r'Voronoi ($p_T>\rho\cdot A$)']
+jettypes = [jetr+'noarea0',
+#            jetr+'noarea5',
+            jetr+'0',
+#            jetr+'5',
+            jetr+'voro'
+            ]
+labels = ['inclusive',
+#          '$CVF>0.5$',
+          'area correction',
+#          '$CVF>0.5$ + area correction',
+          r'Voronoi ($p_T>\rho\cdot A + \sigma_{\rho}\cdot A$)'
+          ]
+colors = ['b',
+#          'g',
+          'r',
+#          'c',
+          'm'
+          ]
 
 #keys = [35,45,55,65]
-keys = [20,25,30,35,40,45]
+keys = [15,20,25,30,35,40,45]
 
 import json
 
@@ -58,10 +73,10 @@ def plotvar(var):
                 'width':(r'$<jet~width>$',r'$\sigma(jet~width)$')
                 }
 
-    for jt,l in zip(jettypes,labels):
+    for jt,l,c in zip(jettypes,labels,colors):
         x,y = getmeans(jt,var)
         plt.figure(0)
-        jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l)
+        jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l,color=c)
 
 #plt.ylim([-10,0])
     plt.xlim([min(keys)-5,max(keys)+5])
@@ -71,10 +86,10 @@ def plotvar(var):
     plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'_'+mu+'.png')
     plt.close()
 
-    for jt,l in zip(jettypes,labels):
+    for jt,l,c in zip(jettypes,labels,colors):
         x,y,yerr = getstds(jt,var)
         plt.figure(0)
-        jetplot = plt.errorbar(x,y,yerr=yerr,marker='o',linestyle='--',label=l)
+        jetplot = plt.errorbar(x,y,yerr=yerr,marker='o',linestyle='--',label=l,color=c)
 
 #plt.ylim([0,10])
     plt.xlim([min(keys)-5,max(keys)+5])
