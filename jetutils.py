@@ -19,7 +19,7 @@ class NPVCorrection(object):
         self.b = jetresdict[jettype][0]
 
     def getpt(self,jetpt,npv):
-        return jetpt-self.b*npv-self.a
+        return jetpt-self.b*npv
     
 
 #test = Calibration()
