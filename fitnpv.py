@@ -9,12 +9,11 @@ from scipy.stats import norm
 pltdir = '../plots/'
 
 ptbin = 'pt201000'
-jetr = 'j'
-mu = 'mu20'
+jetr = 'jvoro'
+mu = 'sigma_rho_study'
 
-jettypes = [jetr+'voro']
-labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction',
-          r'Voronoi ($p_T>\rho\cdot A$)']
+jettypes = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
+labels = [r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>2\rho\cdot A$)',r'Voronoi ($p_T>3\rho\cdot A$)',r'Voronoi ($p_T>4\rho\cdot A$)','area correction','inclusive']
 
 #keys = [35,45,55,65]
 keys = [20,25,30,35,40]

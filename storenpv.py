@@ -2,20 +2,20 @@ import ROOT as r
 from sys import stdout,argv
 
 from math import fabs
-mu = 'mu20'
+mu = 'sigma_rho_study'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
-nentries = tree.GetEntries()
+nentries=tree.GetEntries()
 
 cuts = [10,15,20,25,30,35,40,45]
 resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-derivenpvcorr = False
+derivenpvcorr = True 
 ptmin = 20 if not derivenpvcorr else 20
 ptmax = 30 if not derivenpvcorr else 1000
 ptbin = 'pt%d%d'%(ptmin,ptmax)

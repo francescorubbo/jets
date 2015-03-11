@@ -3,7 +3,8 @@ from scipy.optimize import curve_fit
 from scipy.stats import norm
 
 pu = 'mu20'
-jets = ['j0','j5','jnoarea0','jnoarea5','jvoro']
+jetr='jvoro'
+jets = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
 
 def func(x,a,b):
     return b + a/log(x)
@@ -13,7 +14,7 @@ ptedges = range(20,200,10)
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
-plt.style.use('atlas')
+#plt.style.use('atlas')
 import matplotlib.mlab as mlab
 
 def fitres(jet='j0'):

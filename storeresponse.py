@@ -2,7 +2,7 @@ import ROOT as r
 from sys import stdout,argv
 from math import fabs
 
-mu = 'mu20'
+mu = 'sigma_rho_study'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 

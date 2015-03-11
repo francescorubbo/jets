@@ -2,10 +2,11 @@
 #labels = ['inclusive','$|CVF|>0.5$','area correction','$|CVF|>0.5$ + area correction',r'Voronoi ($p_T>\rho\cdot A$)',
 #          'area correction + $|JVT|>0.7$']
 
-keys = ['jvoro','j0','jnoarea0']
-labels = [r'Voronoi ($p_T>\rho\cdot A + \sigma_{\rho}\cdot \sqrt{A}$)','Jet area correction','Inclusive']
+jetr='jvoro'
+keys = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
+labels = [r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>2\rho\cdot A$)',r'Voronoi ($p_T>3\rho\cdot A$)',r'Voronoi ($p_T>4\rho\cdot A$)','area correction','inclusive']
 
-mu = 'mu20'
+mu = 'sigma_rho_study'
 
 import json
 from numpy import array,vectorize

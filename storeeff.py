@@ -2,7 +2,7 @@ import ROOT as r
 from sys import stdout
 from math import fabs
 
-mu = 'mu20'
+mu = 'sigma_rho_study'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -11,7 +11,8 @@ tree = ff.Get('tree0/tree')
 nentries = tree.GetEntries()
 nentries = 50000
 
-keys = ['jvoro']
+jetr='jvoro'
+keys = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
 
 jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
 

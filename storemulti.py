@@ -4,11 +4,19 @@ from math import fabs
 
 jet = argv[1]
 
-ptmin = 20
-ptmax = 30
+calibrate=True
+
+if calibrate:
+	ptmin = 20
+	ptmax = 30
+	calibratekey = 'calib'
+else:
+	ptmin = 20
+	ptmax = 1000
+	calibratekey = 'uncalib'
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
-mu = 'mu20'
+mu = 'sigma_rho_study'
 from dataset import getsamp
 filename = '../data/'+getsamp(mu)
 
@@ -42,8 +50,11 @@ for jentry in xrange(nentries):
 
     for ncl,jpt,jeta in zip(ncls,jpts,jetas):
         if fabs(jeta)>1.0: continue
-        calibpt = npvcorr.getpt(jpt,npv)
-        calibpt = calib.getpt(calibpt)
+	if calibrate:
+		calibpt = npvcorr.getpt(jpt,npv)
+		calibpt = calib.getpt(calibpt)
+	else:
+		calibpt = jpt
         if calibpt<ptmin: continue
         if calibpt>ptmax: continue
         njets+=1
@@ -58,7 +69,7 @@ for jentry in xrange(nentries):
             break
 
 import json
-with open('../output/clperjetvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
+with open('../output/clperjetvsnpv_'+jet+'_'+ptbin+'_'+mu+'_'+calibratekey+'.json','w') as outfile:
     json.dump(clperjetdict,outfile)
-with open('../output/jetperevtvsnpv_'+jet+'_'+ptbin+'_'+mu+'.json','w') as outfile:
+with open('../output/jetperevtvsnpv_'+jet+'_'+ptbin+'_'+mu+'_'+calibratekey+'.json','w') as outfile:
     json.dump(jetperevtdict,outfile)
