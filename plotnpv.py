@@ -48,7 +48,7 @@ def getstds(jet='j0',var='res'):
     resdict = json.load(open('../output/'+var+'vsnpv_'+jet+'_'+ptbin+'_'+mu+'.json'))
     y = [std(resdict['%d'%k]) for k in keys]
 #    y = [fitgaus(resdict['%d'%k],jet) for k in keys]
-    yerr = array(y)/sqrt(2*len(resdict['%d'%k])-1)
+    yerr = array(y)/[sqrt(2*len(resdict['%d'%k])-1) for k in keys]
     x = [k-2.5 for k in keys]
     return x,y,yerr
     
