@@ -2,7 +2,7 @@ from numpy import mean,std,array
 import matplotlib.pyplot as plt
 from matplotlib import rc
 rc('text', usetex=True)
-plt.style.use('atlas')
+#plt.style.use('atlas')
 
 import json
 
@@ -16,7 +16,7 @@ mu = 'sigma_rho_study'
 #          r'Voronoi ($p_T>\rho\cdot A$)']
 
 jettypes = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
-labels = [r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>2\rho\cdot A$)',r'Voronoi ($p_T>3\rho\cdot A$)',r'Voronoi ($p_T>4\rho\cdot A$)','area correction','inclusive']
+labels = [r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>\rho\cdot A+\sigma_\rho\cdot\sqrt{A}$)',r'Voronoi ($p_T>\rho\cdot A+2\sigma_\rho\cdot\sqrt{A}$)',    r'Voronoi ($p_T>\rho\cdot A+3\sigma_\rho\cdot\sqrt{A}$)',r'Voronoi ($p_T>\rho\cdot A+4\sigma_\rho\cdot\sqrt{A}$)','area correction','inclusive']
 
 #keys = [35,45,55,65]
 keys = [20,25,30,35,40,45]

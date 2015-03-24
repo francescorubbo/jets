@@ -2,12 +2,12 @@ from numpy import load,log,linspace,digitize,array,mean,std
 from scipy.optimize import curve_fit
 from scipy.stats import norm
 
-pu = 'mu20'
+pu = 'sigma_rho_study'
 jetr='jvoro'
 jets = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
 
-def func(x,a,b):
-    return b + a/log(x)
+def func(x,a,b,c):
+    return a + b*log(x) + c*log(x)**2
 
 ptedges = range(20,200,10)
 
@@ -16,6 +16,8 @@ from matplotlib import rc
 rc('text', usetex=True)
 #plt.style.use('atlas')
 import matplotlib.mlab as mlab
+
+sigma_frac=0.8
 
 def fitres(jet='j0'):
     responses = load('../output/responses_'+jet+'_'+pu+'.npy')
@@ -29,8 +31,8 @@ def fitres(jet='j0'):
         resdata = responses[ptbins==ptbin]
         ptdata = recopts[ptbins==ptbin]
         if ptbin==1: 
-            resdata = resdata[resdata<mean(resdata)+1.5*std(resdata)]
-            ptdata = ptdata[resdata<mean(resdata)+1.5*std(resdata)]
+            resdata = resdata[resdata<mean(resdata)+sigma_frac*std(resdata)]
+            ptdata = ptdata[resdata<mean(resdata)+sigma_frac*std(resdata)]
         gfunc = norm
         (mu,sigma) = gfunc.fit(resdata)
         n,bins,patches = plt.hist(resdata,normed=True,bins=50)
@@ -48,7 +50,7 @@ def fitres(jet='j0'):
     print popt
     print pcov
     
-    xp = linspace(20,200,100)
+    xp = linspace(10,200,100)
     plt.plot(recopts,responses,'.',avgpt,avgres,'o',xp,func(xp,*popt),'r-')
     plt.xlabel('$p_T^{reco}$ [GeV]')
     plt.ylabel('$p_T^{reco}/p_T^{true}$')
@@ -86,8 +88,8 @@ for jet in jets:
         resdata = responses[ptbins==ptbin]
         ptdata = recopts[ptbins==ptbin]
         if ptbin==1: 
-            resdata = resdata[resdata<mean(resdata)+1.5*std(resdata)]
-            ptdata = ptdata[resdata<mean(resdata)+1.5*std(resdata)]
+            resdata = resdata[resdata<mean(resdata)+sigma_frac*std(resdata)]
+            ptdata = ptdata[resdata<mean(resdata)+sigma_frac*std(resdata)]
         gfunc = norm
         (mu,sigma) = gfunc.fit(resdata)
         n,bins,patches = plt.hist(resdata,normed=True,bins=50)
