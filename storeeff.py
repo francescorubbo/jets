@@ -2,9 +2,9 @@ import ROOT as r
 from sys import stdout
 from math import fabs
 
-mu = 'sigma_rho_study'
+mu = 'voronoi_cvf'
 from dataset import getsamp
-filename = '../data/'+getsamp(mu)
+filename = '/atlas/output/rubbo/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -12,7 +12,7 @@ nentries = tree.GetEntries()
 nentries = 50000
 
 jetr='jvoro'
-keys = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
+keys = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10',jetr+'0cvf5',jetr+'0cvfx',jetr+'1cvf5',jetr+'1cvfx',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
 
 jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
 
@@ -49,9 +49,15 @@ for jentry in xrange(nentries):
             if fabs(jeta)>1.0: continue
             nrecofalse[k].append(tjpt)
             calibpt = jpt
+	    belowzero=0
             if not dojvt:
                 calibpt = npvcorrdict[k].getpt(calibpt,npv)
+		if calibpt<0:
+			belowzero=1	
+			print(k)
                 calibpt = calibdict[k].getpt(calibpt)
+		if belowzero>0:
+			calibpt=0	
             nreco[k].append(calibpt)
 
     for tpt,teta in zip(tree.truejetpt,tree.truejeteta):

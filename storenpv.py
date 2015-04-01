@@ -2,9 +2,9 @@ import ROOT as r
 from sys import stdout,argv
 
 from math import fabs
-mu = 'sigma_rho_study'
+mu = 'voronoi_cvf'
 from dataset import getsamp
-filename = '../data/'+getsamp(mu)
+filename = '/atlas/output/rubbo/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -15,9 +15,9 @@ resdict = {c:[] for c in cuts}
 massdict = {c:[] for c in cuts}
 widthdict = {c:[] for c in cuts}
 
-derivenpvcorr = True 
-ptmin = 20 if not derivenpvcorr else 20
-ptmax = 30 if not derivenpvcorr else 1000
+derivenpvcorr = False 
+ptmin = 30 if not derivenpvcorr else 20
+ptmax = 40 if not derivenpvcorr else 1000
 ptbin = 'pt%d%d'%(ptmin,ptmax)
 
 jet = argv[1]

@@ -2,9 +2,9 @@ import ROOT as r
 from sys import stdout,argv
 from math import fabs
 
-mu = 'sigma_rho_study'
+mu = 'voronoi_cvf'
 from dataset import getsamp
-filename = '../data/'+getsamp(mu)
+filename = '/atlas/output/rubbo/'+getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')

@@ -3,10 +3,34 @@
 #          'area correction + $|JVT|>0.7$']
 
 jetr='jvoro'
-keys = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
-labels = [r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>2\rho\cdot A$)',r'Voronoi ($p_T>3\rho\cdot A$)',r'Voronoi ($p_T>4\rho\cdot A$)','area correction','inclusive']
 
-mu = 'sigma_rho_study'
+#extra=''
+#extra='jvoro0'
+#extra='jvoro1'
+#extra='spread'
+extra='spread'
+
+if extra=='':
+	keys = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10',jetr+'0cvf5',jetr+'0cvfx',jetr+'1cvf5',jetr+'1cvfx',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
+	labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>10\rho\cdot A$)',r'Voronoi ($p_T>0$ and CVF5)',r'Voronoi ($p_T>0$ and CVF$\infty$)',r'Voronoi ($p_T>\rho\cdot A$ and CVF5)',r'Voronoi ($p_T>\rho\cdot A$ and CVF$\infty$)',r'Voronoi (spreading)',r'Voronoi (spreading and CVF5)',r'Voronoi (spreading and CVF$\infty$)']
+
+if extra=='jvoro0':
+	keys = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'0cvf5',jetr+'0cvfx']
+	labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>0$ and CVF5)',r'Voronoi ($p_T>0$ and CVF$\infty$)']
+
+if extra=='jvoro1':
+	keys = ['j0','jnoarea0','j0cvf',jetr+'1',jetr+'1cvf5',jetr+'1cvfx']
+	labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>\rho\cdot A$ and CVF5)',r'Voronoi ($p_T>\rho\cdot A$ and CVF$\infty$)']
+
+if extra=='spread':
+	keys = ['j0','jnoarea0','j0cvf',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
+	labels = ['area correction','inclusive','area correction and CVF',r'Voronoi (spreading)',r'Voronoi (spreading and CVF5)',r'Voronoi (spreading and CVF$\infty$)']
+
+if extra=='jvoro10':
+	keys = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10']
+	labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>10\rho\cdot A$)']
+
+mu = 'voronoi_cvf'
 
 import json
 from numpy import array,vectorize
@@ -52,8 +76,8 @@ for k,l in zip(keys,labels):
 plt.ylabel('Efficiency')
 plt.xlabel('Truth jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
-plt.ylim([0.9,1.01])
-plt.savefig('../plots/efficiencies_'+mu+'.png')
+plt.ylim([0.85,1.01])
+plt.savefig('../plots/efficiencies_'+mu+'_'+extra+'.png')
 plt.close()
 
 for k,l in zip(keys,labels):
@@ -62,4 +86,4 @@ plt.ylabel('Fake rate')
 plt.xlabel('Reco jet $p_T$ [GeV]')
 plt.ylim([0.,0.6])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
-plt.savefig('../plots/mistags_'+mu+'.png')
+plt.savefig('../plots/mistags_'+mu+'_'+extra+'.png')

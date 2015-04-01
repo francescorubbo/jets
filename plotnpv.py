@@ -1,3 +1,4 @@
+from sys import argv
 from numpy import load,mean,std,array,median,sqrt
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -8,14 +9,33 @@ from scipy.stats import norm
 
 pltdir = '../plots/'
 
-ptbin = 'pt2030'
+ptbin = 'pt3040'
 jetr = 'jvoro'
-mu = 'sigma_rho_study'
+mu = 'voronoi_cvf'
 
 #jettypes = [jetr+'noarea0',jetr+'noarea5',jetr+'0',jetr+'5',jetr+'voro']
 #labels = ['inclusive','$CVF>0.5$','area correction','$CVF>0.5$ + area correction', r'Voronoi ($p_T>\rho\cdot A$)']
-jettypes = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
-labels = [r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>\rho\cdot A+\sigma_\rho\cdot\sqrt{A}$)',r'Voronoi ($p_T>\rho\cdot A+2\sigma_\rho\cdot\sqrt{A}$)',r'Voronoi ($p_T>\rho\cdot A+3\sigma_\rho\cdot\sqrt{A}$)',r'Voronoi ($p_T>\rho\cdot A+4\sigma_\rho\cdot\sqrt{A}$)','area correction','inclusive']
+extra=argv[1]
+
+if extra=='everything':
+        jettypes = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10',jetr+'0cvf5',jetr+'0cvfx',jetr+'1cvf5',jetr+'1cvfx',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
+        labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>10\rho\cdot A$)',r'Voronoi ($p_T>0$ and CVF5)',r'Voronoi ($p_T>0$ and CVF$\infty$)',r'Voronoi ($p_T>\rho\cdot A$ and CVF5)',r'Voronoi ($p_T>\rho\cdot A$ and CVF$\infty$)',r'Voronoi (spreading)',r'Voronoi (spreading and CVF5)',r'Voronoi (spreading and CVF$\infty$)']
+
+if extra=='jvoro0':
+        jettypes = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'0cvf5',jetr+'0cvfx']
+        labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>0$ and CVF5)',r'Voronoi ($p_T>0$ and CVF$\infty$)']
+
+if extra=='jvoro1':
+        jettypes = ['j0','jnoarea0','j0cvf',jetr+'1',jetr+'1cvf5',jetr+'1cvfx']
+        labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>\rho\cdot A$ and CVF5)',r'Voronoi ($p_T>\rho\cdot A$ and CVF$\infty$)']
+
+if extra=='spread':
+        jettypes = ['j0','jnoarea0','j0cvf',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
+        labels = ['area correction','inclusive','area correction and CVF',r'Voronoi (spreading)',r'Voronoi (spreading and CVF5)',r'Voronoi (spreading and CVF$\infty$)']
+
+if extra=='jvoro10':
+        jettypes = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10']
+        labels = ['area correction','inclusive','area correction and CVF',r'Voronoi ($p_T>0$)',r'Voronoi ($p_T>\rho\cdot A$)',r'Voronoi ($p_T>10\rho\cdot A$)']
 
 #keys = [35,45,55,65]
 keys = [15,20,25,30,35,40,45]
@@ -64,12 +84,12 @@ def plotvar(var):
         plt.figure(0)
         jetplot = plt.plot(x,y,marker='o',linestyle='--',label=l)
 
-    plt.ylim([2.2,4])
+    plt.ylim([1,5])
     plt.xlim([min(keys)-10,max(keys)+5])
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][0])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'_'+mu+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvmean'+'_'+ptbin+'_'+mu+'_'+extra+'.png')
     plt.close()
 
     for jt,l in zip(jettypes,labels):
@@ -82,7 +102,7 @@ def plotvar(var):
     plt.xlabel(r'NPV')
     plt.ylabel(varlabel[var][1])
     plt.legend(loc='upper left',frameon=False,numpoints=1)
-    plt.savefig(pltdir+jetr+var+'vsnpvstd_'+ptbin+'_'+mu+'.png')
+    plt.savefig(pltdir+jetr+var+'vsnpvstd_'+ptbin+'_'+mu+'_'+extra+'.png')
     plt.close()
 
 for var in ['res',

@@ -2,9 +2,9 @@ from numpy import load,log,linspace,digitize,array,mean,std
 from scipy.optimize import curve_fit
 from scipy.stats import norm
 
-pu = 'sigma_rho_study'
+pu = 'voronoi_cvf'
 jetr='jvoro'
-jets = [jetr+'0',jetr+'1',jetr+'2',jetr+'3',jetr+'4','j0','jnoarea0']
+jets = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10',jetr+'0cvf5',jetr+'0cvfx',jetr+'1cvf5',jetr+'1cvfx',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
 
 def func(x,a,b,c):
     return a + b*log(x) + c*log(x)**2
