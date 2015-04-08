@@ -35,9 +35,13 @@ mu = 'voronoi_cvf'
 import json
 from numpy import array,vectorize
 
-isolated=True
-if isolated:
-	isolated_string = '_isolatedtjets'
+isolated_true=True
+isolated_reco=True
+if isolated_true:
+	isolated_string = '_isolatedt'
+	if isolated_reco:
+		isolated_string += 'r'
+	isolated_string+='jets'
 else:
 	isolated_string = ''
 
@@ -83,7 +87,7 @@ for k,l in zip(keys,labels):
 plt.ylabel('Efficiency')
 plt.xlabel('Truth jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
-plt.ylim([0.8,1.01])
+plt.ylim([0.5,1.01])
 plt.savefig('../plots/efficiencies_'+mu+isolated_string+'_'+extra+'.png')
 plt.close()
 
