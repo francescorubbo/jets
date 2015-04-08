@@ -34,10 +34,17 @@ mu = 'voronoi_cvf'
 
 import json
 from numpy import array,vectorize
-ntrue = array(json.load(open('../output/ntrue_'+mu+'.json')))
-nreco = json.load(open('../output/nreco_'+mu+'.json'))
-nrecotrue = json.load(open('../output/nrecotrue_'+mu+'.json'))
-nrecofalse = json.load(open('../output/nrecofalse_'+mu+'.json'))
+
+isolated=True
+if isolated:
+	isolated_string = '_isolatedtjets'
+else:
+	isolated_string = ''
+
+ntrue = array(json.load(open('../output/ntrue_'+mu+isolated_string+'.json')))
+nreco = json.load(open('../output/nreco_'+mu+isolated_string+'.json'))
+nrecotrue = json.load(open('../output/nrecotrue_'+mu+isolated_string+'.json'))
+nrecofalse = json.load(open('../output/nrecofalse_'+mu+isolated_string+'.json'))
 
 import matplotlib.pyplot as plt
 #plt.style.use('atlas')
@@ -76,8 +83,8 @@ for k,l in zip(keys,labels):
 plt.ylabel('Efficiency')
 plt.xlabel('Truth jet $p_T$ [GeV]')
 plt.legend(frameon=False,numpoints=1,loc="lower right")
-plt.ylim([0.85,1.01])
-plt.savefig('../plots/efficiencies_'+mu+'_'+extra+'.png')
+plt.ylim([0.8,1.01])
+plt.savefig('../plots/efficiencies_'+mu+isolated_string+'_'+extra+'.png')
 plt.close()
 
 for k,l in zip(keys,labels):
@@ -86,4 +93,4 @@ plt.ylabel('Fake rate')
 plt.xlabel('Reco jet $p_T$ [GeV]')
 plt.ylim([0.,0.6])
 plt.legend(frameon=False,numpoints=1,loc="upper right")
-plt.savefig('../plots/mistags_'+mu+'_'+extra+'.png')
+plt.savefig('../plots/mistags_'+mu+isolated_string+'_'+extra+'.png')
