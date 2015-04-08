@@ -4,7 +4,7 @@ from math import fabs
 
 mu = 'voronoi_cvf'
 from dataset import getsamp
-filename = '/atlas/output/rubbo/'+getsamp(mu)
+filename = getsamp(mu)
 
 ff = r.TFile(filename)
 tree = ff.Get('tree0/tree')
@@ -15,6 +15,12 @@ jetr='jvoro'
 keys = ['j0','jnoarea0','j0cvf',jetr+'0',jetr+'1',jetr+'10',jetr+'0cvf5',jetr+'0cvfx',jetr+'1cvf5',jetr+'1cvfx',jetr+'s',jetr+'cvf5s',jetr+'cvfxs']
 
 jvtcut = {'jvt2':0.2,'jvt4':0.4,'jvt7':0.7}
+
+isolated=True
+if isolated:
+	extra='_isolatedtjets'
+else:
+	extra=''
 
 ntrue = []
 nreco      = {k: [] for k in keys}
@@ -38,11 +44,14 @@ for jentry in xrange(nentries):
         jetname = k
         dojvt = 'jvt' in jetname
         if dojvt: jetname = 'j0'
-        for ijet,(jeta,jpt,tjpt,tjeta) in enumerate(
-            zip(getattr(tree,'%seta'%jetname),getattr(tree,'%spt'%jetname),getattr(tree,'t%spt'%jetname),getattr(tree,'t%seta'%jetname))):
+        for ijet,(jeta,jpt,tjpt,tjeta,tjmindr) in enumerate(
+            zip(getattr(tree,'%seta'%jetname),getattr(tree,'%spt'%jetname),getattr(tree,'t%spt'%jetname),getattr(tree,'t%seta'%jetname),getattr(tree,'t%smindr'%jetname))):
             if dojvt:
                 if tree.j0jvt[ijet]>0. and tree.j0jvt[ijet]<jvtcut[k]:
                     continue
+	    if isolated:
+	    	if tjmindr < 0.8:
+			continue
 
             if fabs(tjeta)<1.0:
                 nrecotrue[k].append(tjpt)
@@ -60,8 +69,11 @@ for jentry in xrange(nentries):
 			calibpt=0	
             nreco[k].append(calibpt)
 
-    for tpt,teta in zip(tree.truejetpt,tree.truejeteta):
+    for tpt,teta,tmindr in zip(tree.truejetpt,tree.truejeteta,tree.truejetmindr):
         if fabs(teta)>1.0: continue
+	if isolated:
+		if tmindr < 0.8:
+			continue
         ntrue.append(tpt)
 print
 
@@ -82,12 +94,12 @@ for k in keys:
     binrecotrue[k] = [float(x) for x in histogram(nrecotrue[k],binedges)[0][2::]]
 
 import json
-with open('../output/ntrue_'+mu+'.json','w') as outfile:
+with open('../output/ntrue_'+mu+extra+'2.json','w') as outfile:
     json.dump(bintrue,outfile)
-with open('../output/nreco_'+mu+'.json','w') as outfile:
+with open('../output/nreco_'+mu+extra+'2.json','w') as outfile:
     json.dump(binreco,outfile)
-with open('../output/nrecofalse_'+mu+'.json','w') as outfile:
+with open('../output/nrecofalse_'+mu+extra+'2.json','w') as outfile:
     json.dump(binrecofalse,outfile)
-with open('../output/nrecotrue_'+mu+'.json','w') as outfile:
+with open('../output/nrecotrue_'+mu+extra+'2.json','w') as outfile:
     json.dump(binrecotrue,outfile)
 
